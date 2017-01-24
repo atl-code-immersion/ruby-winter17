@@ -59,6 +59,8 @@ def enter_teams
 		end
 	end
 
+	@teams.sort_by! {|team| team.ranking}
+
 	clear_screen
 	menu
 end
