@@ -1,0 +1,3 @@
+[o:Account	:@customero:Customer:
+@nameI"
+Aaron:ET:@locationI"Atlanta;	T:@balancef35:@acct_numberi:@acct_typeI"checking;	T

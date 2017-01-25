@@ -7,7 +7,16 @@ Create an ATM-like program that helps customers create an account, review that a
 require_relative 'bank_classes'
 
 @customers = []
+if File.zero?("customers.txt") == false
+	@customers = File.open("customers.txt", "r"){|from_file| Marshal.load(from_file)}
+end
+
+
 @accounts = []
+if File.zero?("accounts.txt") == false
+	@accounts = File.open("accounts.txt", "r"){|from_file| Marshal.load(from_file)}
+end
+
 
 def welcome_screen
 	@current_customer = ""
@@ -16,6 +25,7 @@ def welcome_screen
 	puts "-----------------------"
 	puts "1. Customer Sign-In"
 	puts "2. New Customer Registration"
+	puts "3. List Customers"
 
 	choice = gets.chomp.to_i
 
@@ -24,8 +34,19 @@ def welcome_screen
 			sign_in
 		when 2
 			sign_up("","")
+		when 3
+			list_customers
 	end
 
+end
+
+def list_customers
+
+	@customers.each_with_index do |customer,index|
+		puts "#{index+1}. #{customer.name}, #{customer.location}"
+	end
+
+	welcome_screen
 end
 
 def sign_in
@@ -82,6 +103,9 @@ def sign_up(name,location)
 	@current_customer = Customer.new(name, location)
 	@customers.push(@current_customer)
 	puts "Registration successful!"
+
+	File.open("customers.txt", "w"){|f| f.write(Marshal.dump(@customers))}
+	
 	account_menu
 end
 
@@ -118,6 +142,9 @@ def create_account
 	new_acct = Account.new(@current_customer, amount, (@accounts.length+1), acct_type)
 	@accounts.push(new_acct)
 	puts "Account successfully created!"
+
+	File.open("accounts.txt", "w"){|f| f.write(Marshal.dump(@accounts))}
+
 	account_menu
 end
 
